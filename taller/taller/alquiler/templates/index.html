@@ -1,0 +1,57 @@
+{% extends "master.html" %}
+
+{% block title %}
+  Listado de Edifcios
+{% endblock %}
+
+{% block content %}
+<table id="tabla_datos">
+
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Direccion</th>
+      <th>Ciudad</th>
+      <th>Tipo </th>
+      <th>Departamentos</th>
+      <th>Opciones</th>
+    </tr>
+  </thead>
+
+  {% for e in edificio%}
+  <tr>
+    <td> {{e.nombre}}</td>
+    <td> {{e.direccion}}</td>
+    <td> {{e.ciudad}}</td>
+    <td> {{e.tipo}}</td>
+    <td>
+      <ul>
+        {% for t in e.ubicacion.all %}
+          <li>
+            <span>{{t.nombre}} - {{t.costo_dept}} </span> 
+          </li>
+        {% endfor %}
+      </ul>
+        [<a href="{% url 'crear_departamento' %}">Agregar Departamento</a>] 
+        <br>[<a href="{% url 'editar_departamento' e.id%}">Editar Departamento</a>] 
+        <br>[<a href="{% url 'eliminar_departamento' e.id%}">Eliminar Departamento</a>]
+    </td>
+    <td>
+      <a href="{% url 'crear_edificio'%}">Crear Edificio</a> <br>
+      <a href="{% url 'editar_edificio' e.id %}">Editar Edificio</a> <br>
+      <a href="{% url 'eliminar_edificio' e.id %}"
+      onclick="return confirm('¿Está seguro de la eliminación?')" >
+      Eliminar Edificio</a>
+    </td>
+
+  </tr>
+  {% endfor %}
+</table>
+
+<script type="text/javascript">
+  $(document).ready( function () {
+    $('#tabla_datos').DataTable();
+  });
+</script>
+
+{% endblock %}
